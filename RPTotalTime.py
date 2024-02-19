@@ -7,7 +7,7 @@ import requests
 app = Flask(__name__)
 
 # My Google API key
-GOOGLE_API_KEY = 'AIzaSyD5Ya8Xz_6YDCeMrBIoZqkWmd1ycLkEvHA'
+GOOGLE_API_KEY = 'Add API Key Here'
 
 # Function to get coordinates for a given address using Google Maps API
 def get_coordinates(address):
