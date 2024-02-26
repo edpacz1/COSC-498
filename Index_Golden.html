@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mercury Route Optimizer</title>
+    <style>
+    body {
+        font-family: 'Arial', sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f5f5f5;
+    }
+
+    .banner {
+        background-color: #4CAF50;
+        color: white;
+        padding: 10px 0;
+        text-align: center;
+        position: fixed; /* Fixed positioning */
+        top: 0; /* Position at the top */
+        left: 0; /* Position at the left */
+        width: 100%; /* Full width */
+        z-index: 1000; /* Ensure it's on top of other content */
+    }
+
+    h1 {
+        color: #333;
+        text-align: center;
+        margin-top: 0; /* Remove default margin for h1 */
+    }
+
+    .container {
+        display: flex;
+        justify-content: space-between;
+        max-width: 1200px; /* Adjust the maximum width of the container */
+        margin: 60px auto 0 auto; /* Center the container horizontally and add top margin to avoid overlapping with banner */
+    }
+
+    .input-section,
+    .output-section {
+        flex-basis: 45%; /* Adjusted flex-basis for both sections */
+        padding: 10px; /* Added padding to both sections */
+        box-sizing: border-box; /* Ensure padding is included in the width */
+    }
+
+    form {
+        max-width: 100%; /* Adjust form width */
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    label {
+        display: block;
+        margin-bottom: 10px;
+        color: #333;
+    }
+
+    select,
+    input {
+        width: calc(100% - 22px);
+        padding: 10px;
+        margin-bottom: 15px;
+        box-sizing: border-box;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        display: inline-block;
+        font-size: 14px; /* Reduce font size */
+    }
+
+    button {
+        background-color: #4CAF50;
+        color: white;
+        padding: 12px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: background-color 0.3s;
+    }
+
+    button:hover {
+        background-color: #45a049;
+    }
+
+    #result {
+        margin-top: 20px;
+        color: #333;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        text-align: left; /* Align text to the left */
+        font-size: 14px; /* Reduce font size */
+    }
+
+    ol {
+        padding-left: 20px; /* Add some left padding to the ordered list */
+    }
+
+    li {
+        margin-bottom: 10px;
+    }
+
+    .bold-italic {
+        font-weight: bold;
+        font-style: italic;
+    }
+
+    #map {
+        height: 400px; /* Set the height of the map */
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px; /* Add margin bottom for the map */
+    }
+
+    #mapIframe,
+    #optimized-map {
+        margin-top: 20px;
+        text-align: center;
+        width: 100%; /* Make the map take full width */
+    }
+
+    #mapIframe iframe,
+    #optimized-map iframe {
+        width: 90%; /* Adjust the width of the iframe */
+        max-width: 800px; /* Set maximum width for the map */
+        height: 450px; /* Set the height of the map */
+        border: none; /* Remove border */
+        border-radius: 10px; /* Add border radius */
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add box shadow */
+        display: inline-block; /* Ensure the iframe is centered */
+    }
+
+    .menu {
+        width: 150px;
+        background-color: #4CAF50;
+        color: white;
+        text-align: center;
+        padding: 20px 0;
+        position: fixed; /* Position the menu fixed to the left */
+        left: 0; /* Align the menu to the left */
+        top: calc(0.18in + 60px); /* Align the menu to the top */
+        height: 100vh; /* Set the height to cover the full viewport height */
+    }
+
+    .menu button {
+        display: block;
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 10px;
+        border: none;
+        background-color: inherit;
+        color: inherit;
+        cursor: pointer;
+        font-size: 16px;
+    }
+
+    .main-content {
+        flex: 1;
+        padding: 20px;
+        margin-left: 150px; /* Adjust the main content to avoid overlap with the menu */
+    }
+
+    #buildView,
+    #resultsView {
+        display: none;
+    }
+</style>
+</head>
+<body>
+    <div class="banner">
+        <h1>Mercury Route Optimizer</h1>
+    </div>
+
+    <div class="container">
+        <div class="menu">
+            <button id="buildOption" onclick="showBuildView()">Build</button>
+            <button id="resultsOption" onclick="showResultsView()">Results</button>
+        </div>
+
+        <div class="main-content">
+            <div id="buildView">
+                <section class="input-section">
+                    <form id="routeForm">
+                        <label for="vehicleMPG">Vehicle MPG Rating:</label>
+                        <input type="number" name="vehicleMPG" step="any" required>
+
+                        <label for="gasPrice">Estimated Gas Price/Gallon:</label>
+                        <input type="number" name="gasPrice" step="any" required>
+
+                        <label for="minimizeChoice">Minimize:</label>
+                        <select name="minimizeChoice">
+                            <option value="time" selected>Time</option>
+                            <option value="distance">Distance</option>
+                        </select>
+
+                        <label for="startingAddress">Starting Address:</label>
+                        <input type="text" name="startingAddress" required autocomplete="on" id="startingAddress">
+
+                        <div id="addresses">
+                            <label for="address2">Address 2:</label>
+                            <input type="text" name="address2" required autocomplete="on" id="address2">
+                        </div>
+
+                        <button id="addAddressBtn" type="button" onclick="addAddress()">Add Address</button>
+
+                        <button id="optimizeBtn" type="button" onclick="showHourglass()">Optimize</button>
+                    </form>
+                </section>
+
+                <section class="output-section">
+                    <h2>Location Map</h2>
+                    <div id="map"></div>
+                </section>
+            </div>
+
+            <div id="resultsView">
+                <section class="input-section">
+                    <h2>Optimization Results</h2>
+                    <div id="result"></div>
+                </section>
+
+                <section class="output-section">
+                    <h2>Optimized Route Map</h2>
+                    <div id="optimized-map"></div>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var addressCounter = 3; // Starting address counter
+        var isOptimizing = false;
+        var map;
+        var markers = [];
+
+        function addAddress() {
+            var currentCount = addressCounter++;
+            var newLabel = document.createElement('label');
+            newLabel.textContent = 'Address ' + currentCount + ':';
+            var newInput = document.createElement('input');
+            newInput.type = 'text';
+            newInput.name = 'address' + currentCount;
+            newInput.required = true;
+            newInput.autocomplete = 'on'; // Enable autocomplete
+            newInput.id = 'address' + currentCount;
+
+            var addressesDiv = document.getElementById('addresses');
+            addressesDiv.appendChild(newLabel);
+            addressesDiv.appendChild(newInput);
+
+            // Initialize autocomplete for the new input field
+            var autocomplete = new google.maps.places.Autocomplete(newInput);
+
+            // Add marker for the new address
+            addMarker(autocomplete);
+        }
+
+        function showHourglass() {
+            isOptimizing = true;
+
+            // Change button styles to red
+            document.getElementById('addAddressBtn').style.backgroundColor = '#FF0000';
+            document.getElementById('optimizeBtn').style.backgroundColor = '#FF0000';
+
+            // Perform the optimization
+            optimizeRoute();
+        }
+
+        function optimizeRoute() {
+            var form = document.getElementById('routeForm');
+            var formData = new FormData(form);
+
+            fetch('/solve', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                var resultDiv = document.getElementById('result');
+                resultDiv.innerHTML = '<h2>Optimization Result</h2>';
+                resultDiv.innerHTML += '<p>Status: ' + data.status + '</p>';
+                resultDiv.innerHTML += '<p>Total Driving Time: ' + data.total_duration + ' hours</p>';
+                resultDiv.innerHTML += '<p>Total Driving Distance: ' + data.total_distance + ' miles</p>';
+                resultDiv.innerHTML += '<p>Estimated Fuel Cost: $' + calculateEstimatedFuelCost(data.total_distance) + '</p>';
+                resultDiv.innerHTML += '<p>Ordered Path:</p>';
+                resultDiv.innerHTML += '<ol>';
+                data.ordered_path.forEach((path, index) => {
+                    resultDiv.innerHTML += '<li>Waypoint ' + (index + 1) + ': From <span class="bold-italic">' + path[0] + '</span> to <span class="bold-italic">' + path[1] + '</span></li>';
+                });
+                resultDiv.innerHTML += '</ol>';
+
+                // Display the optimized map
+                var optimizedMapDiv = document.getElementById('optimized-map');
+                optimizedMapDiv.innerHTML = '<iframe width="600" height="450" frameborder="0" style="border:0" src="' + data.map_url + '" allowfullscreen></iframe>';
+
+                // Reset button styles after optimization is complete
+                document.getElementById('addAddressBtn').style.backgroundColor = '#4CAF50';
+                document.getElementById('optimizeBtn').style.backgroundColor = '#4CAF50';
+                isOptimizing = false;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                // Reset button styles in case of an error
+                document.getElementById('addAddressBtn').style.backgroundColor = '#4CAF50';
+                document.getElementById('optimizeBtn').style.backgroundColor = '#4CAF50';
+                isOptimizing = false;
+            });
+        }
+
+        function calculateEstimatedFuelCost(totalDistance) {
+            var vehicleMPG = parseFloat(document.getElementsByName('vehicleMPG')[0].value);
+            var gasPrice = parseFloat(document.getElementsByName('gasPrice')[0].value);
+
+            return ((totalDistance / vehicleMPG) * gasPrice).toFixed(2);
+        }
+
+        function initMap() {
+            map = new google.maps.Map(document.getElementById('map'), {
+                center: { lat: 37.0902, lng: -95.7129 }, // United States
+                zoom: 4
+            });
+
+            var inputFields = document.querySelectorAll('input[type="text"]');
+            inputFields.forEach(function (input) {
+                var autocomplete = new google.maps.places.Autocomplete(input);
+                addMarker(autocomplete);
+            });
+        }
+
+        function addMarker(autocomplete) {
+            autocomplete.addListener('place_changed', function () {
+                var place = autocomplete.getPlace();
+                if (!place.geometry) {
+                    console.error("Autocomplete's returned place contains no geometry");
+                    return;
+                }
+
+                // Create a marker for the entered address and center the map
+                var marker = new google.maps.Marker({
+                    map: map,
+                    position: place.geometry.location
+                });
+
+                markers.push(marker);
+
+                // Center the map on the entered address
+                map.setCenter(place.geometry.location);
+            });
+        }
+
+        function showBuildView() {
+            document.getElementById('buildView').style.display = 'block';
+            document.getElementById('resultsView').style.display = 'none';
+        }
+
+        function showResultsView() {
+            document.getElementById('buildView').style.display = 'none';
+            document.getElementById('resultsView').style.display = 'block';
+        }
+
+        // Call the initMap function when the page loads
+        window.onload = function () {
+            initMap();
+            showBuildView(); // Show build view by default
+        };
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD5Ya8Xz_6YDCeMrBIoZqkWmd1ycLkEvHA&libraries=places&callback=initMap" async defer></script>
+</body>
+</html>
