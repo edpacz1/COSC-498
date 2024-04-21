@@ -10,49 +10,46 @@
             margin: 0;
             padding: 0;
             background-color: #f5f5f5;
+            display: flex; /* Added to ensure full width layout */
+            flex-direction: column; /* Ensures the banner is at the top */
+            min-height: 100vh; /* Ensures the container stretches vertically */
         }
-
         .banner {
             background-color: #4CAF50;
             color: white;
             padding: 10px 0;
             text-align: center;
+            width: 100%; /* Ensures the banner extends full width */
         }
-
         h1 {
             color: #333;
             text-align: center;
-            margin-top: 0; /* Remove default margin for h1 */
+            margin-top: 0;
         }
-
         .container {
             display: flex;
-            justify-content: space-between;
---            flex-wrap: wrap; /* Allow containers to wrap to the next line */
-            max-width: 1200px; /* Adjust the maximum width of the container */
-            margin: 0 auto; /* Center the container horizontally */
+            /* Removed justify-content: space-between; */
+            /* Removed max-width: 1200px; */
+            /* Removed margin: 0 auto; */
+            flex-grow: 1; /* Allows the container to fill the available space */
         }
-
         .input-section, .output-section {
-            flex-basis: 45%; /* Adjusted flex-basis for both sections */
-            padding: 10px; /* Added padding to both sections */
-            box-sizing: border-box; /* Ensure padding is included in the width */
+            flex-basis: 45%;
+            padding: 10px;
+            box-sizing: border-box;
         }
-
         form {
-            max-width: 100%; /* Adjust form width */
+            max-width: 100%;
             background-color: #fff;
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
-
         label {
             display: block;
             margin-bottom: 10px;
             color: #333;
         }
-
         select, input {
             width: calc(100% - 22px);
             padding: 10px;
@@ -61,8 +58,8 @@
             border: 1px solid #ccc;
             border-radius: 5px;
             display: inline-block;
+            font-size: 14px;
         }
-
         button {
             background-color: #4CAF50;
             color: white;
@@ -73,11 +70,9 @@
             font-size: 16px;
             transition: background-color 0.3s;
         }
-
         button:hover {
             background-color: #45a049;
         }
-
         #result {
             margin-top: 20px;
             color: #333;
@@ -85,102 +80,182 @@
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            text-align: left; /* Align text to the left */
+            text-align: left;
+            font-size: 14px;
         }
-
         ol {
-            padding-left: 20px; /* Add some left padding to the ordered list */
+            padding-left: 20px;
         }
-
         li {
             margin-bottom: 10px;
         }
-
-        .bold-italic {
+        .bold {
             font-weight: bold;
+        }
+        .bold-italic {
             font-style: italic;
         }
-
         #map {
-            height: 400px; /* Set the height of the map */
+            height: 400px;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            margin-bottom: 20px; /* Add margin bottom for the map */
+            margin-bottom: 20px;
         }
-
-#mapIframe,
-#optimized-map {
-    margin-top: 20px;
-    text-align: center;
-    width: 100%; /* Make the map take full width */
-}
-
-#mapIframe iframe,
-#optimized-map iframe {
-    width: 90%; /* Adjust the width of the iframe */
-    max-width: 800px; /* Set maximum width for the map */
-    height: 450px; /* Set the height of the map */
-    border: none; /* Remove border */
-    border-radius: 10px; /* Add border radius */
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add box shadow */
-    display: inline-block; /* Ensure the iframe is centered */
-}
-
-
+        #mapIframe,
+        #optimized-map {
+            margin-top: 20px;
+            text-align: center;
+            width: 100%;
+        }
+        #mapIframe iframe,
+        #optimized-map iframe {
+            width: 90%;
+            max-width: 800px;
+            height: 450px;
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: inline-block;
+        }
+        .menu {
+            width: 150px;
+            background-color: #4CAF50;
+            color: white;
+            text-align: center;
+            padding: 20px 0;
+        }
+        .menu button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: none;
+            background-color: inherit;
+            color: inherit;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .main-content {
+            flex: 1;
+            padding: 20px;
+        }
+        #buildView, #resultsView {
+            display: none;
+        }
+        .directions-dropdown {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-top: 10px;
+            background-color: #f9f9f9;
+            display: none;
+        }
+        .directions-dropdown.visible {
+            display: block;
+        }
+        .collapsible {
+            background-color: #f9f9f9;
+            color: #333;
+            cursor: pointer;
+            padding: 18px;
+            width: 100%;
+            border: none;
+            text-align: left;
+            outline: none;
+            font-size: 15px;
+            transition: 0.4s;
+        }
+        .active, .collapsible:hover {
+            background-color: #ccc;
+        }
+        .content {
+            padding: 0 18px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.2s ease-out;
+        }
+        .waypoint-button {
+            background-color: #f9f9f9;
+            color: #333;
+            cursor: pointer;
+            padding: 18px;
+            width: 100%;
+            border: none;
+            text-align: left;
+            outline: none;
+            font-size: 15px;
+            transition: 0.4s;
+            border-bottom: 1px solid #ccc;
+        }
+        .waypoint-button:hover {
+            background-color: #ccc;
+        }
+        .content {
+            padding: 0 18px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.2s ease-out;
+        }
+        .active {
+            max-height: 1000px;
+        }
     </style>
 </head>
 <body>
     <div class="banner">
         <h1>Mercury Route Optimizer</h1>
     </div>
-
     <div class="container">
-        <section class="input-section">
-            <form id="routeForm">
-                <label for="vehicleMPG">Vehicle MPG Rating:</label>
-                <input type="number" name="vehicleMPG" step="any" required>
-
-                <label for="gasPrice">Estimated Gas Price/Gallon:</label>
-                <input type="number" name="gasPrice" step="any" required>
-
-                <label for="minimizeChoice">Minimize:</label>
-                <select name="minimizeChoice">
-                    <option value="time" selected>Time</option>
-                    <option value="distance">Distance</option>
-                </select>
-
-                <label for="startingAddress">Starting Address:</label>
-                <input type="text" name="startingAddress" required autocomplete="on" id="startingAddress">
-
-                <div id="addresses">
-                    <label for="address2">Address 2:</label>
-                    <input type="text" name="address2" required autocomplete="on" id="address2">
-                </div>
-
-                <button id="addAddressBtn" type="button" onclick="addAddress()">Add Address</button>
-
-                <button id="optimizeBtn" type="button" onclick="showHourglass()">Optimize</button>
-            </form>
-            <div id="result"></div>
-        </section>
-
-        <section class="output-section">
-            <h2>Location Map</h2>
-            <div id="map"></div>
-
-            <h2>Optimized Route Map</h2>
-            <div id="optimized-map"></div>
-
-            <div id="mapIframe"></div>
-        </section>
+        <div class="menu">
+            <button id="buildOption" onclick="showBuildView()">Build</button>
+            <button id="resultsOption" onclick="showResultsView()">Results</button>
+        </div>
+        <div class="main-content">
+            <div id="buildView">
+                <section class="input-section">
+                    <form id="routeForm">
+                        <label for="vehicleMPG">Vehicle MPG Rating:</label>
+                        <input type="number" name="vehicleMPG" step="any" required>
+                        <label for="gasPrice">Estimated Gas Price/Gallon:</label>
+                        <input type="number" name="gasPrice" step="any" required>
+                        <label for="minimizeChoice">Minimize:</label>
+                        <select name="minimizeChoice">
+                            <option value="time" selected>Time</option>
+                            <option value="distance">Distance</option>
+                        </select>
+                        <label for="startingAddress">Starting Address:</label>
+                        <input type="text" name="startingAddress" required autocomplete="on" id="startingAddress">
+                        <div id="addresses">
+                            <label for="address2">Address 2:</label>
+                            <input type="text" name="address2" required autocomplete="on" id="address2">
+                        </div>
+                        <button id="addAddressBtn" type="button" onclick="addAddress()">Add Address</button>
+                        <button id="optimizeBtn" type="button" onclick="showHourglass()">Optimize</button>
+                    </form>
+                </section>
+                <section class="output-section">
+                    <h2>Location Map</h2>
+                    <div id="map"></div>
+                </section>
+            </div>
+            <div id="resultsView">
+                <section class="input-section">
+                    <h2>Optimization Results</h2>
+                    <div id="result"></div>
+                </section>
+                <section class="output-section">
+                    <h2>Optimized Route Map</h2>
+                    <div id="optimized-map"></div>
+                    <button id="saveHtmlBtn" style="display: block; margin: 20px auto;">Save</button> <!-- Save Button -->
+                </section>
+            </div>
+        </div>
     </div>
-
     <script>
-        var addressCounter = 3; // Starting address counter
+        var addressCounter = 3;
         var isOptimizing = false;
         var map;
         var markers = [];
-
         function addAddress() {
             var currentCount = addressCounter++;
             var newLabel = document.createElement('label');
@@ -189,92 +264,103 @@
             newInput.type = 'text';
             newInput.name = 'address' + currentCount;
             newInput.required = true;
-            newInput.autocomplete = 'on'; // Enable autocomplete
+            newInput.autocomplete = 'on';
             newInput.id = 'address' + currentCount;
-
             var addressesDiv = document.getElementById('addresses');
             addressesDiv.appendChild(newLabel);
             addressesDiv.appendChild(newInput);
-
-            // Initialize autocomplete for the new input field
             var autocomplete = new google.maps.places.Autocomplete(newInput);
-
-            // Add marker for the new address
             addMarker(autocomplete);
         }
-
         function showHourglass() {
             isOptimizing = true;
-
-            // Change button styles to red
             document.getElementById('addAddressBtn').style.backgroundColor = '#FF0000';
             document.getElementById('optimizeBtn').style.backgroundColor = '#FF0000';
-
-            // Perform the optimization
             optimizeRoute();
         }
+        
+function optimizeRoute() {
+    var form = document.getElementById('routeForm');
+    var formData = new FormData(form);
+    fetch('/solve', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        var resultDiv = document.getElementById('result');
+        // Keep the Optimization Result heading as it is
+        resultDiv.innerHTML += '<p>Status: <strong>' + data.status + '</strong></p>';
+        resultDiv.innerHTML += '<p>Total Driving Time: <strong>' + data.total_duration + ' hours</strong></p>';
+        resultDiv.innerHTML += '<p>Total Driving Distance: <strong>' + data.total_distance + ' miles</strong></p>';
+        resultDiv.innerHTML += '<p>Estimated Fuel Cost: <strong>$' + calculateEstimatedFuelCost(data.total_distance) + '</strong></p>';
+        resultDiv.innerHTML += '<p>Ordered Path:</p>';
+        data.ordered_path.forEach((path, index) => {
+            var containerDiv = document.createElement('div');
+            var pathParagraph = document.createElement('p');
+            pathParagraph.innerHTML = 'Waypoint ' + (index + 1) + ': From <strong>' + path[0] + '</strong> to <strong>' + path[1] + '</strong>';
+            containerDiv.appendChild(pathParagraph);
+            
+            var button = document.createElement('button');
+            button.innerText = 'View Turn-by-Turn Directions';
+            button.className = 'waypoint-button';
+            button.setAttribute('data-index', index);
+            containerDiv.appendChild(button);
+            
+            var directionsDiv = document.createElement('div');
+            directionsDiv.id = 'directions-' + index;
+            directionsDiv.style.display = 'none';
+            
+            if (data.turn_by_turn_directions[index]) {
+                var directionsContent = data.turn_by_turn_directions[index].map(step => `<p>${step[0]} (<strong>${step[1]}</strong>)</p>`).join('');
+                directionsDiv.innerHTML = directionsContent;
+            } else {
+                directionsDiv.innerHTML = '<p>Turn-by-turn directions not available.</p>';
+            }
+            containerDiv.appendChild(directionsDiv);
+            
+            resultDiv.appendChild(containerDiv);
+        });
+        
+        resultDiv.addEventListener('click', function(event) {
+            if (event.target && event.target.classList.contains('waypoint-button')) {
+                var index = event.target.getAttribute('data-index');
+                var directionsDiv = document.getElementById('directions-' + index);
+                directionsDiv.style.display = directionsDiv.style.display === 'none' ? 'block' : 'none';
+            }
+        });
+        
+        var optimizedMapDiv = document.getElementById('optimized-map');
+        optimizedMapDiv.innerHTML = '<iframe width="600" height="450" frameborder="0" style="border:0" src="' + data.map_url + '" allowfullscreen></iframe>';
 
-        function optimizeRoute() {
-            var form = document.getElementById('routeForm');
-            var formData = new FormData(form);
-
-            fetch('/solve', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                var resultDiv = document.getElementById('result');
-                resultDiv.innerHTML = '<h2>Optimization Result</h2>';
-                resultDiv.innerHTML += '<p>Status: ' + data.status + '</p>';
-                resultDiv.innerHTML += '<p>Total Driving Time: ' + data.total_duration + ' hours</p>';
-                resultDiv.innerHTML += '<p>Total Driving Distance: ' + data.total_distance + ' miles</p>';
-                resultDiv.innerHTML += '<p>Estimated Fuel Cost: $' + calculateEstimatedFuelCost(data.total_distance) + '</p>';
-                resultDiv.innerHTML += '<p>Ordered Path:</p>';
-                resultDiv.innerHTML += '<ol>';
-                data.ordered_path.forEach((path, index) => {
-                    resultDiv.innerHTML += '<li>Waypoint ' + (index + 1) + ': From <span class="bold-italic">' + path[0] + '</span> to <span class="bold-italic">' + path[1] + '</span></li>';
-                });
-                resultDiv.innerHTML += '</ol>';
-
-                // Display the optimized map
-                var optimizedMapDiv = document.getElementById('optimized-map');
-                optimizedMapDiv.innerHTML = '<iframe width="600" height="450" frameborder="0" style="border:0" src="' + data.map_url + '" allowfullscreen></iframe>';
-
-                // Reset button styles after optimization is complete
-                document.getElementById('addAddressBtn').style.backgroundColor = '#4CAF50';
-                document.getElementById('optimizeBtn').style.backgroundColor = '#4CAF50';
-                isOptimizing = false;
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                // Reset button styles in case of an error
-                document.getElementById('addAddressBtn').style.backgroundColor = '#4CAF50';
-                document.getElementById('optimizeBtn').style.backgroundColor = '#4CAF50';
-                isOptimizing = false;
-            });
-        }
+        // Reset button colors back to green after processing results
+        document.getElementById('addAddressBtn').style.backgroundColor = '#4CAF50';
+        document.getElementById('optimizeBtn').style.backgroundColor = '#4CAF50';
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        // Ensure buttons revert to green in case of an error
+        document.getElementById('addAddressBtn').style.backgroundColor = '#4CAF50';
+        document.getElementById('optimizeBtn').style.backgroundColor = '#4CAF50';
+    });
+}
 
         function calculateEstimatedFuelCost(totalDistance) {
             var vehicleMPG = parseFloat(document.getElementsByName('vehicleMPG')[0].value);
             var gasPrice = parseFloat(document.getElementsByName('gasPrice')[0].value);
-
             return ((totalDistance / vehicleMPG) * gasPrice).toFixed(2);
         }
-
         function initMap() {
             map = new google.maps.Map(document.getElementById('map'), {
-                center: { lat: 37.0902, lng: -95.7129 }, // United States
+                center: { lat: 37.0902, lng: -95.7129 },
                 zoom: 4
             });
-
             var inputFields = document.querySelectorAll('input[type="text"]');
             inputFields.forEach(function (input) {
                 var autocomplete = new google.maps.places.Autocomplete(input);
                 addMarker(autocomplete);
             });
         }
-
         function addMarker(autocomplete) {
             autocomplete.addListener('place_changed', function () {
                 var place = autocomplete.getPlace();
@@ -282,26 +368,49 @@
                     console.error("Autocomplete's returned place contains no geometry");
                     return;
                 }
-
-                // Create a marker for the entered address and center the map
                 var marker = new google.maps.Marker({
                     map: map,
                     position: place.geometry.location
                 });
-
                 markers.push(marker);
-
-                // Center the map on the entered address
                 map.setCenter(place.geometry.location);
             });
         }
-
-        // Call the initMap function when the page loads
+        function showBuildView() {
+            document.getElementById('buildView').style.display = 'block';
+            document.getElementById('resultsView').style.display = 'none';
+        }
+        function showResultsView() {
+            document.getElementById('buildView').style.display = 'none';
+            document.getElementById('resultsView').style.display = 'block';
+        }
         window.onload = function () {
             initMap();
+            showBuildView();
         };
     </script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=<INSERT API KEY HERE>&libraries=places&callback=initMap" async defer></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=<Enter API Key>&libraries=places&callback=initMap" async defer></script>
+<script>
+document.getElementById('saveHtmlBtn').addEventListener('click', function() {
+    // Select only the Results View content
+    var resultsContent = document.getElementById('resultsView').innerHTML;
+    
+    // Optional: Wrap the resultsContent in an HTML structure
+    var fullHtmlContent = '<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">' +
+        '<meta name="viewport" content="width=device-width, initial-scale=1.0">' +
+        '<title>Optimization Results</title></head><body>' + resultsContent + '</body></html>';
+    
+    // Create a blob from the HTML content
+    var blob = new Blob([fullHtmlContent], {type: 'text/html;charset=utf-8'});
+    
+    // Create a download link and trigger the download
+    var link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'optimized_route_results.html';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+});
+</script>
 </body>
 </html>
-
